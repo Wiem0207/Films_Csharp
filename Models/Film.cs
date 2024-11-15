@@ -7,7 +7,7 @@ namespace WebApi.Models
         public string Poster { get; set; }
         public string imdb { get; set; }
         public int Year { get; set; }
-        public User() { }
+        public Film() { }
         public Film(int Id, string Name, string Poster, string imdb, int Year)
         {
             Id = Id;
