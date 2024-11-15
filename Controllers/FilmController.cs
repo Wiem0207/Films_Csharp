@@ -4,43 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-namespace WebApi.Models
-{
-    public class UserInfo
-    {
-        public string Pseudo { get; set; }
-        public string Password { get; set; }
-    }/////dans models
-}
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/user")]
-    [Route("api/user")]
-    public class UserController : ControllerBase
+    [Route("api/film")]
+    public class FilmController : ControllerBase
     {
         private readonly BddContext _context;
-        private readonly PasswordHasher<User> _passwordHasher;  // Utilisation directe de PasswordHasher<User>
-
-        // Injection du contexte de données dans le constructeur
-        public UserController(BddContext context)
+        public FilmController(BddContext context)
         {
             _context = context;
-            _passwordHasher = new PasswordHasher<User>();  // Instanciation de PasswordHasher<User>
         }
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Film>>> GetFilms()
         {
-            // on récupère la confiture correspondant a l'id
-            var User = await _context.Users.FindAsync(id);
-
-            if (User == null)
+            var films = await _context.Films.ToListAsync();
+            if (films == null || films.Count == 0)
             {
                 return NotFound();
             }
-            // on retourne la confiture
-            return Ok(User);
+
+            return Ok(films);
         }
         public class UserCreation
         {

@@ -6,6 +6,7 @@ namespace WebApi.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public int FilmId { get; set; }
+        public Favourite() { }
         public Favourite(int Id, int UserId, int FilmId)
         {
             Id = Id;
