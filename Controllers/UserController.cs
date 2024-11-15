@@ -17,13 +17,14 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/user")]
+    [Route("api/user")]
     public class UserController : ControllerBase
     {
-        private readonly UserContext _context;
+        private readonly BddContext _context;
         private readonly PasswordHasher<User> _passwordHasher;  // Utilisation directe de PasswordHasher<User>
 
         // Injection du contexte de données dans le constructeur
-        public UserController(UserContext context)
+        public UserController(BddContext context)
         {
             _context = context;
             _passwordHasher = new PasswordHasher<User>();  // Instanciation de PasswordHasher<User>
