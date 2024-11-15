@@ -4,35 +4,34 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/user")]
-    [Route("api/user")]
+    [Route("api/users")]
     public class UserController : ControllerBase
     {
         private readonly BddContext _context;
-        private readonly PasswordHasher<User> _passwordHasher;  // Utilisation directe de PasswordHasher<User>
+        private readonly PasswordHasher<User> _passwordHasher;
 
-        // Injection du contexte de données dans le constructeur
-        public UserController(BddContext context)
+        // Injection du contexte de données et du service PasswordHasher
+        public UserController(BddContext context, PasswordHasher<User> passwordHasher)
         {
             _context = context;
-            _passwordHasher = new PasswordHasher<User>();  // Instanciation de PasswordHasher<User>
+            _passwordHasher = passwordHasher;
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            // on récupère la confiture correspondant a l'id
-            var User = await _context.Users.FindAsync(id);
+            var user = await _context.Users.FindAsync(id);
 
-            if (User == null)
+            if (user == null)
             {
-                return NotFound();
+                return NotFound("Utilisateur introuvable.");
             }
-            // on retourne la confiture
-            return Ok(User);
+
+            return Ok(user);
         }
         public class UserCreation
         {
@@ -43,8 +42,8 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(UserCreation userCreation)
         {
-        // on créer une nouvelle confiture avec les informations reçu
-        User user = new User
+            // on créer une nouvelle confiture avec les informations reçu
+            User user = new User
             {
                 Pseudo = userCreation.Pseudo,
                 Role = userCreation.Role
@@ -124,10 +123,7 @@ namespace WebApi.Controllers
             // Si l'utilisateur est authentifié, on retourne l'utilisateur
             return Ok(user);
         }
-
     }
-    ///////////////
-
 }
 
 

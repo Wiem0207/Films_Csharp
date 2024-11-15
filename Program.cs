@@ -1,5 +1,7 @@
-using Microsoft.EntityFrameworkCore.Sqlite; 
+using Microsoft.EntityFrameworkCore.Sqlite;
+using Microsoft.AspNetCore.Identity;
 namespace WebApi;
+using WebApi.Models;
 
 public class Program
 {
@@ -13,6 +15,7 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddScoped<PasswordHasher<User>>();
         builder.Services.AddDbContext<BddContext>();
 
         var app = builder.Build();
