@@ -37,7 +37,7 @@ namespace WebApi.Controllers
                 return BadRequest("Le mot-clé est requis.");
             }
 
-            var films = await _context.Films.Where(f => f.Name.Contains(keyword)).ToListAsync();
+            var films = await _context.Films..Where(f => f.Name.ToLower().Contains(keyword.ToLower())).ToListAsync();
             if (films == null || films.Count == 0)
             {
                 return NotFound("Aucun film trouvé pour ce mot-clé.");
